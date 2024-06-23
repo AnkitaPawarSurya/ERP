@@ -1,0 +1,38 @@
+﻿@model ERP.BusinessEntity.UserRegisterationViewModelcs
+
+@{
+	Layout = null;
+}
+
+<form asp-action="UserRegi" asp-controller="User" method="post">
+
+	<label>FirstName</label>
+    <input type="text" asp-for="FirstName" />
+
+	
+	<label>LastName</label>
+    <input type="text" asp-for="LastName" />
+
+	
+	<label>Email</label>
+    <input type="email" asp-for="Email" />
+
+	
+	<label>PhoneNumber</label>
+    <input type="tel" asp-for="MobNo" />
+
+	
+	<label>Password</label>
+    <input type="text" asp-for="Password" />
+
+
+	<label>ConfirmPassword</label>
+	<input type="text" asp-for="ConfirmPassword" />
+
+	<label>DOB</label>
+	<input type="datetime-local" asp-for="Dob" />
+
+	<input type="submit" value="save">
+
+
+</form>

@@ -1,0 +1,33 @@
+﻿@model ERP.BusinessEntity.UserRegisterationViewModelcs
+
+
+@{
+	Layout = null;
+}
+
+<form asp-action="AdminRegisteration" asp-controller="User" method="post" onsubmit="return saveuserinfo(this);">
+
+	<label>FirstName</label>
+	<input type="text" asp-for="FirstName" />
+
+
+	<label>LastName</label>
+	<input type="text" asp-for="LastName" />
+
+
+	<label>Email</label>
+	<input type="email" asp-for="Email" />
+
+
+	<label>PhoneNumber</label>
+	<input type="tel" asp-for="MobNo" />
+
+
+
+	<label>DOB</label>
+	<input type="date" asp-for="Dob" />
+
+	<input type="submit" value="save">
+
+
+</form>

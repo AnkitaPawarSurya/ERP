@@ -1,0 +1,17 @@
+﻿@model ERP.BusinessEntity.LoginViewModel
+
+@ViewBag.Error
+
+<form asp-action="Index" asp-controller="Login" method="post">
+
+	<label>UserName</label>
+	<input type="text" asp-for="Email" />
+
+	<label>Password</label>
+	<input type="text" asp-for="Password" />
+
+
+	<input type="submit" value="SignIn">
+
+
+</form>

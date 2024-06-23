@@ -1,0 +1,158 @@
+﻿@{
+	Layout = "_Layout";
+}
+
+<button class="btn btn-secondary"
+        onclick="editinfo('@Url.Action("AdminRegisteration","User")')"> Add User</button>
+
+
+<table id="user">
+    <thead>
+        <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>MobNo</th>
+        </tr>
+    </thead>
+</table>
+
+
+<div class="offcanvas offcanvas-end" id="demo">
+    <div class="offcanvas-header">
+        <h1 class="offcanvas-title" id="title"></h1>
+       
+    </div>
+    <div class="offcanvas-body" id="body">
+        
+       
+    </div>
+</div>
+
+
+
+
+@section Scripts
+{
+	<script>
+		var dataTable,editinfo,saveuserinfo;
+		$(document).ready(function () {
+
+			dataTable = $("#user").DataTable({
+				"ajax": {
+					"url": "/User/GetData",
+					"type": "GET",
+					"datatype": "json"
+				},
+				"columns": [
+					{ "data": "firstName" },
+					{ "data": "lastName" },
+					{ "data": "email" },
+					{ "data": "mobNo" },
+                    {
+                        "data": "userId", "render": function (data) {
+                            return "<a class='btn btn-primary btn-sm' onclick=editinfo('@Url.Action("AdminRegisteration", "User")/" + data + "',true)><i class='fa fa-pencil'></i> Edit</a><a class='btn btn-danger btn-sm' style='margin-left:5px' onclick=deleteInfo(" + data + ")><i class='fa fa-trash'></i> Delete</a>";
+                        },
+                        "orderable": false,
+                        "searchable": false,
+                        "width": "150px"
+                    }
+
+				]
+			})
+
+	})
+
+
+        const deleteInfo = (id) => {
+
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this record!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                showCancelButton: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("Deleteuser", "User")/' + id,
+                        success: function (data) {
+                            if (data.result) {
+                                dataTable.ajax.reload();
+
+                                swal(data.message, {
+                                    icon: "success",
+                                });
+                            }
+
+                            else {
+
+                                swal("Error");
+                            }
+                        }
+
+                    });
+
+                }
+            });
+        }
+
+        editinfo = (url) => {
+            $.ajax({
+
+                type: "GET",
+                url: url,
+                success: function (data) {
+                    $('#body').html(data);
+                    $('#title').html("Add User");
+                    console.log(data);
+
+                    var myOffcanvas = document.getElementById('demo')
+                    var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+                    bsOffcanvas.show();
+
+
+                }
+
+            })
+
+        }
+        
+        saveuserinfo = (form) => {
+
+            $.ajax({
+                type: "POST",
+                url: form.action,
+                data: new FormData(form),
+                contentType: false,
+                processData:false,
+                success: function (data) {
+                    if (data.result) {
+                        dataTable.ajax.reload();
+
+                        swal(data.message, {
+                            icon: "success",
+
+                      
+                        });
+                    }
+                    $("#body").html('');
+
+                    var myOffcanvas = document.getElementById('demo')
+                    var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+                    bsOffcanvas.hide();
+                }
+
+
+            })
+
+            return false;
+        }
+
+   	</script>
+
+}
